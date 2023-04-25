@@ -1,9 +1,10 @@
-const web3 = require('web3');
 const web3Abi = require('web3-eth-abi');
 const sigUtil = require('eth-sig-util');
+const Web3 = require('web3');
 
-// NFT owner keys
-const PUBLIC_KEY = "0x726cDa2Ac26CeE89F645e55b78167203cAE5410E";
+var web3 = new Web3('https://polygon-rpc.com/');
+
+// NFT owner private key
 const PRIVATE_KEY = "0x68619b8adb206de04f676007b2437f99ff6129b672495a6951499c6c56bc2fa6";
 // get current account nonce from OpenSea Shared Contract
 const NONCE = 0;
@@ -47,7 +48,10 @@ const safeTransferFromAbi = {
     'type': "function"
 };
 
-const params = [PUBLIC_KEY, RECEIVER, TOKEN_ID, 1, '0x'];
+const account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY);
+const publicKey = account.address;
+
+const params = [publicKey, RECEIVER, TOKEN_ID, 1, '0x'];
 const functionSignature = web3Abi.encodeFunctionCall(safeTransferFromAbi, params);
 
 const dataToSign = {
@@ -94,7 +98,7 @@ const dataToSign = {
     primaryType: "MetaTransaction",
     message: {
         nonce: parseInt(NONCE),
-        from: PUBLIC_KEY,
+        from: publicKey,
         functionSignature: functionSignature
     }
 };
@@ -108,7 +112,9 @@ let v = "0x".concat(signature.slice(130, 132));
 v = web3.utils.hexToNumber(v);
 if (![27, 28].includes(v)) v += 27;
 
-console.log(`Function signature: ${functionSignature}
+console.log(`User address: ${publicKey}
+
+Function signature: ${functionSignature}
 
 r: ${r}
 s: ${s}
