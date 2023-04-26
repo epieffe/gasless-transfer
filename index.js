@@ -66,12 +66,12 @@ const dataToSign = {
                 type: "string"
             },
             {
-                name: "chainId",
-                type: "uint256"
-            },
-            {
                 name: "verifyingContract",
                 type: "address"
+            },
+            {
+                name: "salt",
+                type: "bytes32"
             }
         ],
         MetaTransaction: [
@@ -92,8 +92,8 @@ const dataToSign = {
     domain: {
         name: "OpenSea Collections",
         version: "1",
-        chainId: 137,
-        verifyingContract: OPENSEA_CONTRACT
+        verifyingContract: OPENSEA_CONTRACT,
+        salt: "0x0000000000000000000000000000000000000000000000000000000000000089"// 137 to bytes32
     },
     primaryType: "MetaTransaction",
     message: {
