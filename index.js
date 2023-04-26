@@ -1,5 +1,5 @@
 const web3Abi = require('web3-eth-abi');
-const sigUtil = require('eth-sig-util');
+const sigUtil = require('@metamask/eth-sig-util');
 const Web3 = require('web3');
 
 var web3 = new Web3('https://polygon-rpc.com/');
@@ -102,8 +102,11 @@ const dataToSign = {
         functionSignature: functionSignature
     }
 };
-const signature = sigUtil.signTypedData_v4(Buffer.from(PRIVATE_KEY.substring(2, 66), 'hex'), {
-    data: dataToSign
+
+const signature = sigUtil.signTypedData({
+    data: dataToSign,
+    privateKey: Buffer.from(PRIVATE_KEY.substring(2, 66), 'hex'),
+    version: 'V4'
 });
 
 let r = signature.slice(0, 66);
