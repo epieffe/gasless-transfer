@@ -97,7 +97,7 @@ const dataToSign = {
     },
     primaryType: "MetaTransaction",
     message: {
-        nonce: parseInt(NONCE),
+        nonce: NONCE,
         from: publicKey,
         functionSignature: functionSignature
     }
